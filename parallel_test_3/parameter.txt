@@ -1,0 +1,7 @@
+executor: 'constant-arrival-rate',
+rate: 200,
+timeUnit: '1s',
+duration: '60s',
+preAllocatedVUs: 50,
+maxVUs: 100,
+
