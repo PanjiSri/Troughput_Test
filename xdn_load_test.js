@@ -7,7 +7,7 @@ export const options = {
     // scenarios: {
     //     constant_load: {
     //         executor: 'constant-arrival-rate',
-    //         rate: 250,
+    //         rate: 300,
     //         timeUnit: '1s',
     //         duration: '60s',
     //         preAllocatedVUs: 50,
@@ -27,31 +27,36 @@ export const options = {
     systemTags: ['scenario', 'status', 'method', 'url'],
 };
 
+const CRASH_TIME_SECONDS = 20;
+const CRASHED_PORT = 2302;
+
+const ALL_REPLICAS = [2302, 2308, 2309];
+const ACTIVE_REPLICAS = [2308, 2309];
+
+let testStartTime = null;
+
 export default function () {
-    const defaultReplicaPorts = [2302, 2308, 2309];
-    
-    let activeReplicas = defaultReplicaPorts;
-    try {
-        if (__ENV.ACTIVE_REPLICAS) {
-            activeReplicas = JSON.parse(__ENV.ACTIVE_REPLICAS);
-        }
-    } catch (e) {
-        console.error("Error parsing active replica:", e);
-    }
-        
-    if (activeReplicas.length === 0) {
-        console.log("No active replica active");
-        return;
+    if (testStartTime === null) {
+        testStartTime = new Date().getTime();
     }
     
-    const selectedPort = activeReplicas[Math.floor(Math.random() * activeReplicas.length)];
+    const currentTime = Math.floor((new Date().getTime() - testStartTime) / 1000);
+    
+    let availablePorts;
+    if (currentTime < CRASH_TIME_SECONDS) {
+        availablePorts = ALL_REPLICAS;
+    } else {
+        availablePorts = ACTIVE_REPLICAS;
+    }
+    
+    const selectedPort = availablePorts[Math.floor(Math.random() * availablePorts.length)];
     const url = `http://localhost:${selectedPort}/api/books`;
     
     const params = {
         headers: {
             'XDN': 'bookcatalog',
         },
-    };
+    };  
 
     const response = http.get(url, params);
     
@@ -59,5 +64,5 @@ export default function () {
         'status is 200': (r) => r.status === 200,
     });
     
-    console.log(`time=${Math.floor(exec.scenario.iterationInTest / 1000)},status=${response.status},duration=${response.timings.duration}`);
+    console.log(`time=${currentTime},status=${response.status},duration=${response.timings.duration}`);
 }
