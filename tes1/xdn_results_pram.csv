@@ -1,0 +1,2 @@
+consistency,get_latency,post_latency,delete_latency,overall_latency
+PRAM,6.76,7.16,6.84,6.92

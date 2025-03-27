@@ -1,0 +1,2 @@
+consistency,get_latency,post_latency,delete_latency,overall_latency
+LINEARIZABILITY,13.59,13.69,13.26,13.52

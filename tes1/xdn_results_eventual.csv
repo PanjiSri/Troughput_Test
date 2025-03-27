@@ -1,0 +1,2 @@
+consistency,get_latency,post_latency,delete_latency,overall_latency
+EVENTUAL,10.52,13.18,10.70,11.46

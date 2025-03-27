@@ -1,0 +1,2 @@
+consistency,get_latency,post_latency,delete_latency,overall_latency
+MONOTONIC_WRITES,7.15,7.81,7.74,7.57

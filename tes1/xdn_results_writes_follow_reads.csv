@@ -1,0 +1,2 @@
+consistency,get_latency,post_latency,delete_latency,overall_latency
+WRITES_FOLLOW_READS,7.17,8.11,7.66,7.65
